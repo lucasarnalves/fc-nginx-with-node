@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  node:
+    build: 
+      context: ./node
+      dockerfile: Dockerfile.prod
+    image: skyzenho/node:prod
+    container_name: node
+    networks:
+      - node-net
+
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile.prod
+    image: skyzenho/nginx:prod
+    container_name: nginx
+    networks:
+      - node-net
+    ports:
+      - "8080:80"
+
+networks: 
+  node-net:
+    driver: bridge
