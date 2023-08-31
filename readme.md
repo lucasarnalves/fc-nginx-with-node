@@ -1,4 +1,4 @@
-# fc-docker
+# fc-nginx-with-node
 Repositorio do desafio Nginx com Node.js 
 Curso Full cycle 3.0
 
@@ -9,9 +9,13 @@ docker-compose up -d
 ```
 
 --- 
-Duvidas:
-1 - Para o funcionar eu tive que adicionar no docker-compose do node port: 3000:3000 para mim isso não deveria acontecer pois o intuito é justamente o nginx fazer esse meio de campo. Gostaria de entender o pq disso.
+#Duvidas:
+
+1 - Para o funcionar eu tive que adicionar no docker-compose do node port: 3000:3000 para mim isso não deveria acontecer pois o intuito é justamente o nginx fazer esse meio de campo. 
+Gostaria de entender o pq disso.
+    
 2 - Para instalar o dockerize precisei trocar a imagem do node:15 para node:latest, porem ao fazer isso, o nginx parou de enxergar  node. Portanto nessa entrega acabei comentando/regredindo o processo e enviando sem o dockerize. Gostaria de entender o pq disso...
+
 ---
 
 Desafio Nginx com Node.js:
