@@ -9,7 +9,8 @@ docker-compose up -d
 ```
 
 --- 
-#Duvidas:
+
+# Duvidas:
 
 1 - Para o funcionar eu tive que adicionar no docker-compose do node port: 3000:3000 para mim isso não deveria acontecer pois o intuito é justamente o nginx fazer esse meio de campo. 
 Gostaria de entender o pq disso.
