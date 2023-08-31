@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>Full Cycle 3.0 desafio nginx-node</title>
+  </head>
+  <body>
+    <h1>Full cycle</h1>
+    <br />
+    <h3>Database nodedb</h2>
+      <h5>Table Peoples</h5>
+    <ul>
+    <% data.forEach(d => { %>
+      <li>Id:<%= d["id"] %> Nome: <%= d["name"] %></li>
+    <% }); %>
+    </ul>
+  </body>
+</html>
