@@ -1,48 +1,89 @@
 const express = require('express')
 const app = express()
-app.set('view engine', 'ejs');
+
 const port = 3000
+
 const config = {
-    host: 'db',
-    user: 'root',
-    password: 'root',
-    database: 'nodedb'
-};
+  host: 'db',
+  user: 'root',
+  password: 'root',
+  database: 'nodedb'
+}
+
 
 const mysql = require('mysql')
 const connection = mysql.createConnection(config)
 
-// const sql = `INSERT INTO people(name) values('Lucas')`
-// connection.query(sql)
-// connection.end()
 
-// /// TESTE
-// connection.query(sql_select, function (err, result, fields) {
-//     if (err) throw err;
-//     console.log(result);
-//     console.log('test')
-//     const data = JSON.stringify(result)
-// });
-// connection.end()
+const table = sqlTable(connection)
 
+function sqlTable(connection) {
+  return new Promise((resolve, reject) => {
+    const sql = `create table if not exists people (
+      id int not null auto_increment,
+      name varchar(255) not null,
+      primary key (id)
+    )`
+    connection.query(sql, (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+      }
+    })
+  })
+}
 
-app.get('/', (req, res) => {
-    const sql_select = `SELECT * FROM people`
-    connection.query(sql_select, function (err, result, fields) {
-        if (err) throw err;
-    console.log(result)
-    console.log(result[0])
-    console.log(result[0]["id"])
-    
-    res.render('data_table.ejs', { data: result });
-    });
-    connection.end()
-    
-    // res.send('<h1>Full Cycle Node</h1>')
-    // res.send(data)
+const insert = sqlInsert(connection)
+
+function sqlInsert(connection) {
+  return new Promise((resolve, reject) => {
+    const sql = `insert into people(name) values ?`
+    const peoples = [['Lucian'], ['Luiz'], ['Gabriel']]
+    connection.query(sql, [peoples], (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+        console.log(`Foram inseridas ${result.affectedRows} pessoas!`)
+      }
+    })
+  })
+}
+
+insert.then(result => {
+  console.log(result)
+})
+
+const select = sqlSelect(connection)
+
+function sqlSelect(connection) {
+  return new Promise((resolve, reject) => {
+    const sql = `select * from people`
+    connection.query(sql, (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+      }
+    })
+  })
+}
+
+const listPeople = async () => {
+  const allPeople = (await select)
+  console.log(allPeople)
+  return allPeople
+}
+
+// const listPeoples = '<ul>' + teste.map(item => `<li>${item}</li>`).join('') + '</ul>'
+
+app.get('/', async (req, res) => {
+  const peoples = await listPeople()
+  const listPeoples = '<ul>' + peoples.map(item => `<li align="center">${item.name}</li>`).join('') + '</ul>'
+  res.send(`<h1 align="center">Full Cycle Rocks!</h1>\n${listPeoples}`)
 })
 
 app.listen(port, () => {
-    console.log('Rodando na porta ' + port)
-    console.log('Esperando')
+  console.log(`Ouvindo na porta: ${port}`)
 })
